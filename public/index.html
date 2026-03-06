@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMSbot - Каталог автомобилей</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Заголовок и информация -->
+        <header class="header">
+            <h1>🚗 AMSbot</h1>
+            <p class="subtitle">Каталог автомобилей с пробегом</p>
+            <p class="description">
+                У нас вы найдёте проверенные автомобили от надёжных продавцов. 
+                Все автомобили проходят техническую проверку.
+            </p>
+        </header>
+
+        <!-- Поиск -->
+        <section class="search-section">
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="search-input" 
+                placeholder="🔍 Поиск по марке, модели, году..."
+            >
+        </section>
+
+        <!-- Фильтр по маркам -->
+        <section class="brands-section">
+            <h2 class="section-title">Марки автомобилей</h2>
+            <div id="brandsContainer" class="brands-container">
+                <!-- Кнопки марок будут добавлены через JS -->
+            </div>
+        </section>
+
+        <!-- Каталог автомобилей -->
+        <section class="catalog-section">
+            <h2 class="section-title">Все автомобили</h2>
+            <div id="carsContainer" class="cars-container">
+                <!-- Карточки автомобилей будут добавлены через JS -->
+            </div>
+            <div id="noResults" class="no-results" style="display: none;">
+                <p>😔 Ничего не найдено</p>
+            </div>
+        </section>
+
+        <!-- Футер -->
+        <footer class="footer">
+            <p>&copy; 2026 AMSbot. Все права защищены.</p>
+        </footer>
+    </div>
+
+    <!-- Модальное окно -->
+    <div id="carModal" class="modal">
+        <div class="modal-content">
+            <div id="modalContent">
+                <!-- Контент загружается через JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
