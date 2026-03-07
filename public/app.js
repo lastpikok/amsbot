@@ -1,6 +1,6 @@
 // Конфигурация
 // Для локального использования (ПК включён):
-const MEDIA_BASE = 'http://ЛОКАЛЬНЫЙ_IP:3000/media';
+const MEDIA_BASE = 'http://192.168.3.2:3000';
 
 // Для Vercel (без фото):
 // const MEDIA_BASE = null;
