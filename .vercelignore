@@ -1,0 +1,7 @@
+node_modules
+cars-media
+*.xlsx
+*.py
+*.md
+.git
+.vscode
