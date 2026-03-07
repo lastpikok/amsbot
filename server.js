@@ -78,7 +78,20 @@ app.get('/api/cars', (req, res) => {
 });
 
 // Запуск
-app.listen(PORT, () => {
+const os = require('os');
+
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚗 Сервер запущен: http://localhost:${PORT}`);
     console.log(`📁 Фото: ${MEDIA_FOLDER}`);
+    
+    // Показываем IP для доступа с телефона
+    const interfaces = os.networkInterfaces();
+    console.log('\n📱 Доступ с телефона:');
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === 'IPv4' && !iface.internal) {
+                console.log(`   http://${iface.address}:${PORT}`);
+            }
+        }
+    }
 });

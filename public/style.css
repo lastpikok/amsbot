@@ -388,7 +388,19 @@ body {
 }
 
 .modal-body {
+    padding: 0;
+}
+
+.modal-body > .no-photo-placeholder,
+.modal-body > .photo-slider,
+.modal-body > .gallery-section {
     padding: 24px;
+    margin: 0;
+}
+
+.modal-body > .modal-price,
+.modal-body > .modal-specs {
+    padding: 0 24px 24px;
 }
 
 .no-photo-placeholder {
