@@ -10,8 +10,8 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.static('public'));
 
-// Папка с фото
-const MEDIA_FOLDER = path.join(__dirname, 'cars-media');
+// Папка с фото (для Vercel - в public)
+const MEDIA_FOLDER = path.join(__dirname, 'public', 'cars-media');
 
 // Раздаём фото статически
 app.use('/media', express.static(MEDIA_FOLDER));

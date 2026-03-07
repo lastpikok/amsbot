@@ -24,6 +24,7 @@
       "dest": "public/$1"
     }
   ],
+  "outputDirectory": "public",
   "env": {
     "NODE_ENV": "production"
   }
