@@ -1,0 +1,296 @@
+[
+  {
+    "brand": "MAZDA",
+    "model": "CX-5",
+    "vin": "LVRHDCAC6NN506853",
+    "vinId": "506853"
+  },
+  {
+    "brand": "HONDA",
+    "model": "VEZEL",
+    "vin": "LHGRU1849M8097043",
+    "vinId": "097043"
+  },
+  {
+    "brand": "MAZDA",
+    "model": "CX-5",
+    "vin": "LVRHDCAC5NN507234",
+    "vinId": "507234"
+  },
+  {
+    "brand": "HONDA",
+    "model": "FIT",
+    "vin": "LHGGR9876M8094649",
+    "vinId": "094649"
+  },
+  {
+    "brand": "VOLKSWAGEN",
+    "model": "Lamando L",
+    "vin": "LSVCB6DM0PN017446",
+    "vinId": "017446"
+  },
+  {
+    "brand": "HONDA",
+    "model": "VEZEL",
+    "vin": "LHGRU1847M8087529",
+    "vinId": "087529"
+  },
+  {
+    "brand": "HONDA",
+    "model": "CIVIC",
+    "vin": "LVHFE1611N6004573",
+    "vinId": "004573"
+  },
+  {
+    "brand": "KIA",
+    "model": "KX3",
+    "vin": "LJD5AA1D9N0074954",
+    "vinId": "074954"
+  },
+  {
+    "brand": "MAZDA",
+    "model": "CX-5",
+    "vin": "LVRHDCAC7NN505307",
+    "vinId": "505307"
+  },
+  {
+    "brand": "TOYOTA",
+    "model": "Corolla",
+    "vin": "LFMAYACC5N0736963",
+    "vinId": "736963"
+  },
+  {
+    "brand": "TOYOTA",
+    "model": "Corolla",
+    "vin": "LFMAYACC5M0701810",
+    "vinId": "701810"
+  },
+  {
+    "brand": "HONDA",
+    "model": "VEZEL",
+    "vin": "LHGRU1843N8027250",
+    "vinId": "027250"
+  },
+  {
+    "brand": "VOLKSWAGEN",
+    "model": "TACQUA",
+    "vin": "LFV2B2C10N3760978",
+    "vinId": "760978"
+  },
+  {
+    "brand": "BMW",
+    "model": "3 Series",
+    "vin": "LBV61BE0XMM124560",
+    "vinId": "124560"
+  },
+  {
+    "brand": "JETTA",
+    "model": "VS7",
+    "vin": "LFV2B20LXN4035565",
+    "vinId": "035565"
+  },
+  {
+    "brand": "SKODA",
+    "model": "Rapid",
+    "vin": "LSVW32NG0NN010621",
+    "vinId": "010621"
+  },
+  {
+    "brand": "AUDI",
+    "model": "Q3",
+    "vin": "LFV2B2F39M7736926",
+    "vinId": "736926"
+  },
+  {
+    "brand": "MAZDA",
+    "model": "CX-4",
+    "vin": "LFPM4APP1P1D19865",
+    "vinId": "D19865"
+  },
+  {
+    "brand": "TOYOTA",
+    "model": "Corolla",
+    "vin": "LFMAYACC1M0369753",
+    "vinId": "369753"
+  },
+  {
+    "brand": "VOLKSWAGEN",
+    "model": "Lamando L",
+    "vin": "LSVCC6DM3NN058468",
+    "vinId": "058468"
+  },
+  {
+    "brand": "VOLKSWAGEN",
+    "model": "POLO",
+    "vin": "LSVFB6AWXM2026056",
+    "vinId": "026056"
+  },
+  {
+    "brand": "VOLKSWAGEN",
+    "model": "Magotan",
+    "vin": "LFV2A23C7M3090655",
+    "vinId": "090655"
+  },
+  {
+    "brand": "VOLKSWAGEN",
+    "model": "LAVIDA",
+    "vin": "LSVNF60COP2039541",
+    "vinId": "039541"
+  },
+  {
+    "brand": "KIA",
+    "model": "KX1",
+    "vin": "LJD4AA194M0092283",
+    "vinId": "092283"
+  },
+  {
+    "brand": "VOLKSWAGEN",
+    "model": "Lamando L",
+    "vin": "LSVCC6DM4NN063954",
+    "vinId": "063954"
+  },
+  {
+    "brand": "MERCEDES",
+    "model": "A Series",
+    "vin": "LE43X8EB0ML204054",
+    "vinId": "204054"
+  },
+  {
+    "brand": "VOLKSWAGEN",
+    "model": "T-ROC",
+    "vin": "LFV2B2A14N5391226",
+    "vinId": "391226"
+  },
+  {
+    "brand": "TOYOTA",
+    "model": "LEVIN",
+    "vin": "LVGBPB9E3NG237589",
+    "vinId": "237589"
+  },
+  {
+    "brand": "GAC",
+    "model": "M8",
+    "vin": "LMGMU1G81R1250601",
+    "vinId": "250601"
+  },
+  {
+    "brand": "HYUNDAI",
+    "model": "Elantra",
+    "vin": "LBECNAFD3MZ153890",
+    "vinId": "153890"
+  },
+  {
+    "brand": "HONDA",
+    "model": "LIFE",
+    "vin": "LVHGS2877M6015998",
+    "vinId": "015998"
+  },
+  {
+    "brand": "HONDA",
+    "model": "XR-V",
+    "vin": "LVHRU1828M5072993",
+    "vinId": "072993"
+  },
+  {
+    "brand": "HYUNDAI",
+    "model": "Elantra",
+    "vin": "LBECNAFD6NZ185606",
+    "vinId": "185606"
+  },
+  {
+    "brand": "HAVAL",
+    "model": "Jolion",
+    "vin": "LGWEE4A57MK036827",
+    "vinId": "036827"
+  },
+  {
+    "brand": "BMW",
+    "model": "3 Series",
+    "vin": "LBV61BE01MM107274",
+    "vinId": "107274"
+  },
+  {
+    "brand": "NISSAN",
+    "model": "QASHQAI",
+    "vin": "LGBL4AE01ND028222",
+    "vinId": "028222"
+  },
+  {
+    "brand": "TOYOTA",
+    "model": "Corolla",
+    "vin": "LFMAL1CCXM0020962",
+    "vinId": "020962"
+  },
+  {
+    "brand": "VOLKSWAGEN",
+    "model": "Tharu",
+    "vin": "LSVUJ6B29MN224227",
+    "vinId": "224227"
+  },
+  {
+    "brand": "MAZDA",
+    "model": "MAZDA 3",
+    "vin": "LVRHDFAC7MN162613",
+    "vinId": "162613"
+  },
+  {
+    "brand": "TOYOTA",
+    "model": "YARIS L",
+    "vin": "LVGCJE235NG955936",
+    "vinId": "955936"
+  },
+  {
+    "brand": "HONDA",
+    "model": "VEZEL",
+    "vin": "LHGRU1842N8098228",
+    "vinId": "098228"
+  },
+  {
+    "brand": "AUDI",
+    "model": "A3 Sportback",
+    "vin": "LFV2B28Y8P6501405",
+    "vinId": "501405"
+  },
+  {
+    "brand": "TOYOTA",
+    "model": "LEVIN",
+    "vin": "LVGB519E7NG703489",
+    "vinId": "703489"
+  },
+  {
+    "brand": "HONDA",
+    "model": "XR-V",
+    "vin": "LVHRV3837P5030840",
+    "vinId": "030840"
+  },
+  {
+    "brand": "VOLKSWAGEN",
+    "model": "Sagitar",
+    "vin": "LFV2A2BU9N4549383",
+    "vinId": "549383"
+  },
+  {
+    "brand": "VOLKSWAGEN",
+    "model": "GOLF",
+    "vin": "LFV2B2CD8M5780084",
+    "vinId": "780084"
+  },
+  {
+    "brand": "HAVAL",
+    "model": "H6",
+    "vin": "LGWEF4A52MH585975",
+    "vinId": "585975"
+  },
+  {
+    "brand": "HONDA",
+    "model": "LIFE",
+    "vin": "LVHGS2876M6026538",
+    "vinId": "026538"
+  },
+  {
+    "brand": "HONDA",
+    "model": "VEZEL",
+    "vin": "LHGRU1848N8100581",
+    "vinId": "100581"
+  }
+]

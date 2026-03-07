@@ -4,9 +4,29 @@
     box-sizing: border-box;
 }
 
+:root {
+    /* Цветовая схема: Premium Automotive */
+    --bg-dark: #0a0a0a;
+    --bg-card: #1a1a1a;
+    --bg-card-hover: #252525;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --text-muted: #666666;
+    --accent-gold: #d4af37;
+    --accent-gold-hover: #f4cf57;
+    --border-color: #333333;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-dark);
+    background-image: url('fon.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: var(--text-primary);
     min-height: 100vh;
     padding: 20px;
 }
@@ -18,31 +38,79 @@ body {
 
 /* Header */
 .header {
-    background: white;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.98) 0%, rgba(10, 10, 10, 0.98) 100%);
+    border: 1px solid var(--border-color);
+    border-bottom: 3px solid var(--accent-gold);
     border-radius: 16px;
-    padding: 30px;
+    padding: 30px 40px;
     margin-bottom: 20px;
     text-align: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 30px var(--shadow-color), 0 0 60px rgba(212, 175, 55, 0.1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--accent-gold) 50%, transparent 100%);
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--accent-gold) 50%, transparent 100%);
+}
+
+.header .logo {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    display: inline-block;
+    border-radius: 50%;
+    border: 3px solid var(--accent-gold);
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.4), inset 0 0 20px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.header .logo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(212, 175, 55, 0.6), inset 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .header h1 {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 10px;
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+    margin: 0;
 }
 
-.subtitle {
-    font-size: 1.2rem;
-    color: #666;
-    margin-bottom: 15px;
-}
-
-.description {
-    color: #888;
-    line-height: 1.6;
-    max-width: 600px;
-    margin: 0 auto;
+/* Декоративные элементы по бокам заголовка */
+.header h1::before,
+.header h1::after {
+    content: '◆';
+    color: var(--accent-gold);
+    font-size: 1rem;
+    margin: 0 15px;
+    opacity: 0.5;
 }
 
 /* Search */
@@ -54,32 +122,40 @@ body {
     width: 100%;
     padding: 16px 20px;
     font-size: 1rem;
-    border: none;
+    border: 1px solid var(--border-color);
     border-radius: 12px;
-    background: white;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: var(--text-muted);
 }
 
 .search-input:focus {
     outline: none;
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
 /* Brands */
 .brands-section {
-    background: white;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
     padding: 25px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 30px var(--shadow-color);
 }
 
 .section-title {
     font-size: 1.5rem;
-    color: #333;
+    color: var(--accent-gold);
     margin-bottom: 20px;
     text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .brands-container {
@@ -92,57 +168,65 @@ body {
 .brand-btn {
     padding: 12px 24px;
     font-size: 1rem;
-    border: 2px solid #667eea;
+    border: 1px solid var(--accent-gold);
     border-radius: 25px;
-    background: white;
-    color: #667eea;
+    background: transparent;
+    color: var(--accent-gold);
     cursor: pointer;
     transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
 }
 
 .brand-btn:hover {
-    background: #667eea;
-    color: white;
+    background: var(--accent-gold);
+    color: var(--bg-dark);
     transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
 }
 
 .brand-btn.active {
-    background: #667eea;
-    color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    background: var(--accent-gold);
+    color: var(--bg-dark);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.5);
 }
 
 /* Catalog */
 .catalog-section {
-    background: white;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
     padding: 25px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 30px var(--shadow-color);
 }
 
 .cars-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
-    min-height: 400px;
 }
 
 .car-card {
-    background: #f8f9fa;
+    background: var(--bg-card-hover);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     overflow: hidden;
-    transition: box-shadow 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .car-card:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    border-color: var(--accent-gold);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.2);
 }
 
 .car-image {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    background: #ddd;
+    background: #2a2a2a;
 }
 
 .car-info {
@@ -152,20 +236,21 @@ body {
 .car-brand {
     font-size: 1.3rem;
     font-weight: bold;
-    color: #667eea;
+    color: var(--accent-gold);
     margin-bottom: 5px;
+    text-transform: uppercase;
 }
 
 .car-model {
     font-size: 1.1rem;
-    color: #333;
+    color: var(--text-primary);
     margin-bottom: 10px;
 }
 
 .car-price {
     font-size: 1.4rem;
     font-weight: bold;
-    color: #2ecc71;
+    color: var(--accent-gold);
     margin-bottom: 15px;
 }
 
@@ -178,56 +263,53 @@ body {
 
 .car-detail {
     font-size: 0.9rem;
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .car-detail strong {
-    color: #333;
+    color: var(--text-primary);
 }
 
 .car-description {
     font-size: 0.9rem;
-    color: #888;
+    color: var(--text-muted);
     line-height: 1.5;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--border-color);
     padding-top: 15px;
 }
 
 .car-vin {
     font-size: 0.8rem;
-    color: #999;
+    color: var(--text-muted);
     margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid #eee;
     word-break: break-all;
 }
 
-/* Placeholder для изображений */
-.car-image[src^="data:image/svg"] {
-    background: #e0e0e0;
-}
-
-/* Заглушка вместо фото */
-.no-photo-placeholder {
+/* No results */
+.no-results {
     text-align: center;
-    padding: 40px 20px;
-    background: #f8f9fa;
-    border-radius: 12px;
-    margin-bottom: 20px;
+    padding: 50px 20px;
+    color: var(--text-secondary);
+    font-size: 1.2rem;
 }
 
-.no-photo-placeholder svg {
-    color: #999;
-    margin-bottom: 10px;
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-muted);
+    margin-top: 20px;
 }
 
-.no-photo-placeholder p {
-    color: #666;
-    margin: 0;
-    font-size: 0.95rem;
+/* Loading */
+.loading {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--accent-gold);
+    font-size: 1.2rem;
 }
 
-/* Модальное окно */
+/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -235,22 +317,23 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.9);
     z-index: 1000;
     justify-content: center;
     align-items: center;
     padding: 20px;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
 }
 
 .modal-content {
-    background: white;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
-    max-width: 600px;
+    max-width: 700px;
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
     animation: modalSlideIn 0.3s ease;
 }
 
@@ -270,20 +353,24 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 20px 24px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(135deg, var(--bg-card-hover) 0%, var(--bg-card) 100%);
+    border-radius: 16px 16px 0 0;
 }
 
 .modal-header h2 {
     font-size: 1.5rem;
-    color: #333;
+    color: var(--accent-gold);
     margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .modal-close {
     background: none;
     border: none;
     font-size: 2rem;
-    color: #999;
+    color: var(--text-muted);
     cursor: pointer;
     padding: 0;
     width: 40px;
@@ -296,27 +383,38 @@ body {
 }
 
 .modal-close:hover {
-    background: #f5f5f5;
-    color: #333;
+    background: var(--bg-card-hover);
+    color: var(--accent-gold);
 }
 
 .modal-body {
     padding: 24px;
 }
 
-.modal-image {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
+.no-photo-placeholder {
+    text-align: center;
+    padding: 40px 20px;
+    background: var(--bg-card-hover);
     border-radius: 12px;
-    background: #e0e0e0;
     margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.no-photo-placeholder svg {
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.no-photo-placeholder p {
+    color: var(--text-secondary);
+    margin: 0;
+    font-size: 0.95rem;
 }
 
 .modal-price {
     font-size: 2rem;
     font-weight: bold;
-    color: #2ecc71;
+    color: var(--accent-gold);
     margin-bottom: 20px;
 }
 
@@ -329,7 +427,7 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 12px 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--border-color);
     font-size: 1rem;
 }
 
@@ -338,108 +436,122 @@ body {
 }
 
 .spec-row span {
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .spec-row strong {
-    color: #333;
+    color: var(--text-primary);
     text-align: right;
 }
 
-.modal-footer {
-    padding: 20px 24px;
-    border-top: 1px solid #eee;
-}
-
-.contact-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    text-decoration: none;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.contact-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-}
-
-.contact-btn svg {
-    flex-shrink: 0;
-}
-
-/* Кнопка GitHub */
-.github-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 16px;
-    background: #24292e;
-    color: white;
-    text-decoration: none;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: transform 0.2s, box-shadow 0.2s;
-    margin-bottom: 12px;
-}
-
-.github-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(36, 41, 46, 0.4);
-    background: #2f363d;
-}
-
-.github-btn svg {
-    flex-shrink: 0;
-}
-
-/* Кнопка Google Drive */
-.drive-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #4285f4 0%, #34a853 50%, #fbbc05 100%);
-    color: white;
-    text-decoration: none;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: transform 0.2s, box-shadow 0.2s;
-    margin-bottom: 12px;
-}
-
-.drive-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(66, 133, 244, 0.4);
-}
-
-.drive-btn svg {
-    flex-shrink: 0;
-}
-
-/* Галереи в модальном окне */
+/* Galleries */
 .gallery-section {
     margin: 20px 0;
 }
 
 .gallery-section h3 {
     font-size: 1.2rem;
-    color: #333;
+    color: var(--accent-gold);
     margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Photo Slider */
+.photo-slider {
+    position: relative;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    background: #000;
+}
+
+.slider-container .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    display: none;
+}
+
+.slider-container .slide.active {
+    opacity: 1;
+    display: block;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    border: none;
+    color: var(--accent-gold);
+    font-size: 2rem;
+    padding: 15px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider-btn:hover {
+    background: var(--accent-gold);
+    color: var(--bg-dark);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.slider-btn.prev {
+    left: 15px;
+}
+
+.slider-btn.next {
+    right: 15px;
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.slider-dots .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.slider-dots .dot:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.slider-dots .dot.active {
+    background: var(--accent-gold);
+    border-color: #fff;
+    transform: scale(1.2);
 }
 
 .photos-gallery {
@@ -455,11 +567,14 @@ body {
     object-fit: cover;
     border-radius: 8px;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid var(--border-color);
 }
 
 .photos-gallery img:hover {
     transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    border-color: var(--accent-gold);
 }
 
 .videos-gallery {
@@ -472,20 +587,87 @@ body {
     width: 100%;
     border-radius: 8px;
     background: #000;
+    border: 1px solid var(--border-color);
 }
 
-/* Адаптивность модального окна */
+.modal-footer {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border-color);
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hover) 100%);
+    border-radius: 0 0 16px 16px;
+}
+
+.contact-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--accent-gold) 0%, #b89628 100%);
+    color: var(--bg-dark);
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.contact-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+    background: linear-gradient(135deg, var(--accent-gold-hover) 0%, var(--accent-gold) 100%);
+}
+
+.contact-btn svg {
+    flex-shrink: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-gold);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gold-hover);
+}
+
+/* Адаптивность */
 @media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.8rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .cars-container {
+        grid-template-columns: 1fr;
+    }
+
+    .brand-btn {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+    }
+    
     .modal-content {
         max-height: 95vh;
     }
     
     .modal-header h2 {
         font-size: 1.2rem;
-    }
-    
-    .modal-image {
-        height: 200px;
     }
     
     .modal-price {
@@ -495,48 +677,12 @@ body {
     .spec-row {
         font-size: 0.9rem;
     }
-}
-
-/* No results */
-.no-results {
-    text-align: center;
-    padding: 50px 20px;
-    color: #888;
-    font-size: 1.2rem;
-}
-
-/* Footer */
-.footer {
-    text-align: center;
-    padding: 30px;
-    color: white;
-    margin-top: 20px;
-}
-
-/* Loading */
-.loading {
-    text-align: center;
-    padding: 50px 20px;
-    color: #888;
-    font-size: 1.2rem;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-    .header h1 {
-        font-size: 1.8rem;
+    
+    .photos-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     }
     
-    .subtitle {
-        font-size: 1rem;
-    }
-    
-    .cars-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .brand-btn {
-        padding: 10px 18px;
-        font-size: 0.9rem;
+    .photos-gallery img {
+        height: 100px;
     }
 }

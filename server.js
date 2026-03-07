@@ -10,33 +10,34 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.static('public'));
 
-// Путь к XLSX файлу
+// Папка с фото
+const MEDIA_FOLDER = path.join(__dirname, 'cars-media');
+
+// Раздаём фото статически
+app.use('/media', express.static(MEDIA_FOLDER));
+
 const XLSX_FILE = path.join(__dirname, 'cars.xlsx');
 
-// Функция чтения XLSX файла
+// Чтение XLSX
 function readCarsFromXlsx() {
     try {
         if (!fs.existsSync(XLSX_FILE)) {
-            console.warn('Файл cars.xlsx не найден');
+            console.warn('cars.xlsx не найден');
             return [];
         }
-
         const workbook = XLSX.readFile(XLSX_FILE);
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
         const data = XLSX.utils.sheet_to_json(sheet);
-
+        
         return data.map((car, index) => ({
             id: index + 1,
-            brand: car['ПРОИЗВОДИТЕЛЬ'] || car['Марка'] || car['brand'] || '',
-            model: car['МОДЕЛЬ'] || car['Модель'] || car['model'] || '',
-            year: car['ГОД'] || car['Год'] || car['year'] || '',
-            price: car['ИТОГО РУБЛИ'] || car['РУБЛИ'] || car['Цена'] || car['price'] || '',
-            mileage: car['ПРОБЕГ'] || car['Пробег'] || car['mileage'] || '',
-            engine: car['ДВИГАТЕЛЬ'] || car['Двигатель'] || car['engine'] || '',
-            transmission: car['КПП'] || car['transmission'] || '',
-            image: car['Изображение'] || car['image'] || '',
-            description: car['КОМПЛЕКТАЦИЯ'] || car['Описание'] || car['description'] || '',
+            brand: car['ПРОИЗВОДИТЕЛЬ'] || '',
+            model: car['МОДЕЛЬ'] || '',
+            year: car['ГОД'] || '',
+            price: car['ИТОГО РУБЛИ'] || '',
+            mileage: car['ПРОБЕГ'] || '',
+            engine: car['ДВИГАТЕЛЬ'] || '',
+            description: car['КОМПЛЕКТАЦИЯ'] || '',
             city: car['ГОРОД'] || '',
             color: car['ЦВЕТ'] || '',
             vin: car['VIN'] || ''
@@ -47,49 +48,37 @@ function readCarsFromXlsx() {
     }
 }
 
-// API endpoint для получения всех автомобилей
+// API: список VIN для которых есть фото
+app.get('/api/media-index', (req, res) => {
+    const index = {};
+    if (fs.existsSync(MEDIA_FOLDER)) {
+        const folders = fs.readdirSync(MEDIA_FOLDER);
+        folders.forEach(folder => {
+            const photosPath = path.join(MEDIA_FOLDER, folder);
+            if (fs.statSync(photosPath).isDirectory()) {
+                const photos = fs.readdirSync(photosPath)
+                    .filter(f => /\.(jpg|jpeg|png|webp)$/i.test(f))
+                    .sort()
+                    .map(f => `/media/${folder}/${f}`);
+                const videos = fs.readdirSync(photosPath)
+                    .filter(f => /\.(mp4|mov|webm)$/i.test(f))
+                    .sort()
+                    .map(f => `/media/${folder}/${f}`);
+                index[folder] = { photos, videos };
+            }
+        });
+    }
+    res.json(index);
+});
+
+// API: автомобили
 app.get('/api/cars', (req, res) => {
     const cars = readCarsFromXlsx();
     res.json(cars);
 });
 
-// API endpoint для поиска автомобилей
-app.get('/api/cars/search', (req, res) => {
-    const query = req.query.q?.toLowerCase() || '';
-    const cars = readCarsFromXlsx();
-    
-    if (!query) {
-        return res.json(cars);
-    }
-    
-    const filtered = cars.filter(car => 
-        car.brand.toLowerCase().includes(query) ||
-        car.model.toLowerCase().includes(query) ||
-        String(car.year).includes(query) ||
-        String(car.price).includes(query)
-    );
-    
-    res.json(filtered);
-});
-
-// API endpoint для получения списка марок
-app.get('/api/brands', (req, res) => {
-    const cars = readCarsFromXlsx();
-    const brands = [...new Set(cars.map(car => car.brand).filter(Boolean))];
-    res.json(brands);
-});
-
-// API endpoint для фильтрации по марке
-app.get('/api/cars/brand/:brand', (req, res) => {
-    const brand = req.params.brand;
-    const cars = readCarsFromXlsx();
-    const filtered = cars.filter(car => 
-        car.brand.toLowerCase() === brand.toLowerCase()
-    );
-    res.json(filtered);
-});
-
+// Запуск
 app.listen(PORT, () => {
-    console.log(`Сервер запущен: http://localhost:${PORT}`);
-    console.log(`Файл с автомобилями: ${XLSX_FILE}`);
+    console.log(`🚗 Сервер запущен: http://localhost:${PORT}`);
+    console.log(`📁 Фото: ${MEDIA_FOLDER}`);
 });
