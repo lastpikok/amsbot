@@ -1,4 +1,4 @@
-// Сервер для Vercel (без локальных файлов)
+// API для Vercel
 const XLSX = require('xlsx');
 const path = require('path');
 const fs = require('fs');
@@ -35,16 +35,24 @@ function readCarsFromXlsx() {
     }
 }
 
+// Обработчик запросов
 module.exports = async (req, res) => {
     // API: автомобили
-    if (req.url.startsWith('/api/cars')) {
+    if (req.url === '/api/cars' || req.url.startsWith('/api/cars?')) {
         const cars = readCarsFromXlsx();
-        return res.json(cars);
+        res.setHeader('Content-Type', 'application/json');
+        return res.end(JSON.stringify(cars));
+    }
+    
+    // API: media-index (пустой для Vercel - фото локально)
+    if (req.url === '/api/media-index') {
+        res.setHeader('Content-Type', 'application/json');
+        return res.end(JSON.stringify({}));
     }
     
     // Статика из public
-    let url = req.url;
-    if (url === '/') url = '/index.html';
+    let url = req.url.replace('/api', '');
+    if (url === '/' || url === '') url = '/index.html';
     
     const filePath = path.join(__dirname, '..', 'public', url);
     
@@ -62,9 +70,10 @@ module.exports = async (req, res) => {
         };
         
         res.setHeader('Content-Type', contentTypes[ext] || 'text/plain');
-        return res.send(content);
+        return res.end(content);
     } catch (e) {
         res.statusCode = 404;
-        return res.send('Not Found');
+        res.setHeader('Content-Type', 'text/plain');
+        return res.end('Not Found: ' + req.url);
     }
 };
