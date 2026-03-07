@@ -1,5 +1,9 @@
 // Конфигурация
-const MEDIA_BASE = '/media';
+// Для локального использования (ПК включён):
+const MEDIA_BASE = 'http://ЛОКАЛЬНЫЙ_IP:3000/media';
+
+// Для Vercel (без фото):
+// const MEDIA_BASE = null;
 
 // Состояние
 let allCars = [];
