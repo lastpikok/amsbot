@@ -26,7 +26,7 @@ if (window.Telegram && window.Telegram.WebApp) {
 // Загрузка ссылок на фото из Telegram
 async function loadTelegramPhotos() {
     try {
-        const response = await fetch('/telegram-photos.json');
+        const response = await fetch('/api/photos');
         telegramPhotos = await response.json();
         console.log(`✅ Загружено ${Object.keys(telegramPhotos).length} папок с фото`);
     } catch (e) {
