@@ -3,18 +3,23 @@ const XLSX = require('xlsx');
 const path = require('path');
 const fs = require('fs');
 
-// Чтение XLSX из public
+// Путь к XLSX файлу (в public папке)
 const XLSX_FILE = path.join(__dirname, '..', 'public', 'cars.xlsx');
 
 function readCarsFromXlsx() {
     try {
+        console.log('Trying to load:', XLSX_FILE);
+        
         if (!fs.existsSync(XLSX_FILE)) {
-            console.warn('cars.xlsx не найден');
+            console.error('cars.xlsx не найден:', XLSX_FILE);
             return [];
         }
+        
         const workbook = XLSX.readFile(XLSX_FILE);
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
         const data = XLSX.utils.sheet_to_json(sheet);
+        
+        console.log('Загружено автомобилей:', data.length);
         
         return data.map((car, index) => ({
             id: index + 1,
@@ -37,16 +42,17 @@ function readCarsFromXlsx() {
 
 // Обработчик запросов
 module.exports = async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Content-Type', 'application/json');
+    
     // API: автомобили
     if (req.url === '/api/cars' || req.url.startsWith('/api/cars?')) {
         const cars = readCarsFromXlsx();
-        res.setHeader('Content-Type', 'application/json');
         return res.end(JSON.stringify(cars));
     }
     
-    // API: media-index (пустой для Vercel - фото локально)
+    // API: media-index (пустой для Vercel)
     if (req.url === '/api/media-index') {
-        res.setHeader('Content-Type', 'application/json');
         return res.end(JSON.stringify({}));
     }
     
