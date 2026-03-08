@@ -1,20 +1,19 @@
-// Загрузка фото в Telegram канал
-// Требуется: npm install telegraf
+// Загрузка фото на VK Cloud (Mail.ru)
+// Требуется: npm install webdav
 
-const { Telegraf } = require('telegraf');
 const fs = require('fs');
 const path = require('path');
+const { createClient } = require('webdav');
 
 // ===== НАСТРОЙКИ =====
-// Получи у @BotFather
-const BOT_TOKEN = '8245127333:AAE7vXQ5H7GRlX6_3o0UbIxR3zwaZkYZiGQ';
-
-// ID твоего канала (из @getmyid_bot)
-const CHANNEL = '-1003782473221';
+// Получи здесь: https://o2.mail.ru/docs#webdav
+const WEBDAV_URL = 'https://cloud.mail.ru/public/ТВОЯ_ПАПКА';
+const WEBDAV_USER = 'ТВОЙ_EMAIL@mail.ru';
+const WEBDAV_PASS = 'ПАРОЛЬ_ПРИЛОЖЕНИЯ'; // Не от почты, а пароль для приложений
 // =====================
 
 const SOURCE = path.join(__dirname, 'public', 'cars-media');
-const MAPPING_FILE = path.join(__dirname, 'telegram-photos.json');
+const MAPPING_FILE = path.join(__dirname, 'vk-mapping.json');
 
 // Загружаем уже загруженные
 let photoMap = {};
@@ -22,20 +21,24 @@ if (fs.existsSync(MAPPING_FILE)) {
     photoMap = JSON.parse(fs.readFileSync(MAPPING_FILE, 'utf8'));
 }
 
-// Создаём бота
-const bot = new Telegraf(BOT_TOKEN);
-
 // Основная функция
 async function uploadAll() {
-    console.log('📁 Загрузка фото в Telegram...\n');
+    console.log('📁 Загрузка фото на VK Cloud...\n');
     
-    if (BOT_TOKEN === 'ВСТАВЬ_СЮДА_ТОКЕН_БОТА') {
-        console.log('❌ Вставь токен бота!');
-        console.log('   1. Открой @BotFather в Telegram');
-        console.log('   2. /newbot → придумай имя');
-        console.log('   3. Скопируй токен');
+    if (WEBDAV_PASS === 'ПАРОЛЬ_ПРИЛОЖЕНИЯ') {
+        console.log('❌ Вставь настройки!');
+        console.log('   1. https://o2.mail.ru/docs#webdav');
+        console.log('   2. Включи WebDAV');
+        console.log('   3. Создай пароль для приложения');
+        console.log('   4. Вставь в upload-vk.js');
         return;
     }
+    
+    // Создаём клиент WebDAV
+    const client = createClient(WEBDAV_URL, {
+        username: WEBDAV_USER,
+        password: WEBDAV_PASS
+    });
     
     if (!fs.existsSync(SOURCE)) {
         console.log('❌ Папка cars-media не найдена!');
@@ -55,7 +58,16 @@ async function uploadAll() {
         if (!vinMatch) continue;
         
         const vinId = vinMatch[1];
+        const remoteFolder = `/${vinId}`;
+        
         console.log(`\n📂 ${vinFolder} → ${vinId}`);
+        
+        // Создаём папку на облаке
+        try {
+            await client.createDirectory(remoteFolder);
+        } catch (e) {
+            // Папка уже существует
+        }
         
         const files = fs.readdirSync(vinPath)
             .filter(f => /\.(jpg|jpeg|png|webp)$/i.test(f))
@@ -66,6 +78,7 @@ async function uploadAll() {
         for (const file of files) {
             total++;
             const filePath = path.join(vinPath, file);
+            const remotePath = `${remoteFolder}/${file}`;
             
             // Пропускаем уже загруженные
             if (photoMap[vinId]?.find(p => p.includes(file))) {
@@ -74,18 +87,13 @@ async function uploadAll() {
             }
             
             try {
-                // Отправляем фото в канал
-                const message = await bot.telegram.sendPhoto(CHANNEL, {
-                    source: fs.createReadStream(filePath)
-                }, {
-                    caption: `${vinId} ${file}`
-                });
+                const fileContent = fs.readFileSync(filePath);
+                await client.putFileContents(remotePath, fileContent);
                 
-                // Получаем ссылку на фото
-                const fileId = message.photo[message.photo.length - 1].file_id;
-                const fileLink = await bot.telegram.getFileLink(fileId);
+                // Прямая ссылка на фото
+                const photoUrl = `${WEBDAV_URL}${remotePath}`;
+                photoMap[vinId].push(photoUrl);
                 
-                photoMap[vinId].push(fileLink.toString());
                 uploaded++;
                 console.log(`   ✅ ${file}`);
                 
@@ -93,9 +101,6 @@ async function uploadAll() {
                 if (uploaded % 10 === 0) {
                     fs.writeFileSync(MAPPING_FILE, JSON.stringify(photoMap, null, 2));
                 }
-                
-                // Ждём 1 секунду (лимит Telegram)
-                await new Promise(r => setTimeout(r, 1000));
             } catch (e) {
                 console.log(`   ❌ ${file}: ${e.message}`);
             }
@@ -107,9 +112,7 @@ async function uploadAll() {
     
     console.log(`\n🎉 Готово!`);
     console.log(`   Загружено: ${uploaded} из ${total}`);
-    console.log(`   Сохранено в: telegram-photos.json`);
-    
-    process.exit(0);
+    console.log(`   Сохранено в: vk-mapping.json`);
 }
 
 uploadAll().catch(console.error);

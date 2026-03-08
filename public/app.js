@@ -1,14 +1,12 @@
 // Конфигурация
-// Для локального использования (ПК включён) - вставь свой IP:
-// const MEDIA_BASE = 'http://192.168.3.2:3000/media';
-
-// Для Vercel (фото не работают):
-const MEDIA_BASE = null;
+// Telegram с фото (загрузить через upload-telegram.js)
+// Ссылки хранятся в telegram-photos.json
 
 // Состояние
 let allCars = [];
 let currentBrand = null;
 let mediaIndex = {}; // VIN (6 цифр) -> {photos: [], videos: []}
+let telegramPhotos = {}; // Загружается из JSON
 
 // DOM
 const searchInput = document.getElementById('searchInput');
@@ -25,21 +23,21 @@ if (window.Telegram && window.Telegram.WebApp) {
     Telegram.WebApp.expand();
 }
 
-// Загрузка индекса медиа
-async function loadMediaIndex() {
+// Загрузка ссылок на фото из Telegram
+async function loadTelegramPhotos() {
     try {
-        const response = await fetch('/api/media-index');
-        mediaIndex = await response.json();
-        console.log(`✅ Загружено ${Object.keys(mediaIndex).length} папок с фото`);
+        const response = await fetch('/telegram-photos.json');
+        telegramPhotos = await response.json();
+        console.log(`✅ Загружено ${Object.keys(telegramPhotos).length} папок с фото`);
     } catch (e) {
-        console.error('Ошибка загрузки медиа:', e);
+        console.error('Ошибка загрузки фото:', e);
     }
 }
 
 // Загрузка автомобилей
 async function loadCars() {
     showLoading();
-    await loadMediaIndex();
+    await loadTelegramPhotos(); // Загружаем фото из Telegram
     try {
         const response = await fetch('/api/cars');
         allCars = await response.json();
@@ -83,15 +81,43 @@ function renderBrands() {
     });
 }
 
+// Загрузка ссылок на фото из Telegram
+async function loadTelegramPhotos() {
+    try {
+        const response = await fetch('/telegram-photos.json');
+        telegramPhotos = await response.json();
+        console.log(`✅ Загружено ${Object.keys(telegramPhotos).length} папок с фото`);
+    } catch (e) {
+        console.error('Ошибка загрузки фото:', e);
+    }
+}
+
 // Найти медиа по VIN
-function getCarMedia(vin) {
+async function getCarMedia(vin) {
     if (!vin) return { photos: [], videos: [] };
     const vinId = vin.replace(/[^a-zA-Z0-9]/g, '').slice(-6);
-    return mediaIndex[vinId] || { photos: [], videos: [] };
+    
+    // Проверяем локальный кэш
+    if (mediaIndex[vinId]) {
+        return mediaIndex[vinId];
+    }
+    
+    // Проверяем Telegram
+    if (telegramPhotos[vinId]) {
+        mediaIndex[vinId] = { 
+            photos: telegramPhotos[vinId], 
+            videos: [] 
+        };
+        return mediaIndex[vinId];
+    }
+    
+    // Нет фото
+    mediaIndex[vinId] = { photos: [], videos: [] };
+    return mediaIndex[vinId];
 }
 
 // Рендер карточек
-function renderCars(cars) {
+async function renderCars(cars) {
     if (cars.length === 0) {
         carsContainer.style.display = 'none';
         noResults.style.display = 'block';
@@ -103,10 +129,11 @@ function renderCars(cars) {
 
     // Сортируем: сначала авто с фото, потом без фото
     const sortedCars = [...cars].sort((a, b) => {
-        const mediaA = getCarMedia(a.vin);
-        const mediaB = getCarMedia(b.vin);
-        const hasPhotoA = mediaA.photos.length > 0;
-        const hasPhotoB = mediaB.photos.length > 0;
+        const vinA = a.vin?.replace(/[^a-zA-Z0-9]/g, '').slice(-6);
+        const vinB = b.vin?.replace(/[^a-zA-Z0-9]/g, '').slice(-6);
+        // Проверяем наличие фото (предполагаем что есть если папка существует)
+        const hasPhotoA = vinA && mediaIndex[vinA]?.photos.length > 0;
+        const hasPhotoB = vinB && mediaIndex[vinB]?.photos.length > 0;
         if (hasPhotoA && !hasPhotoB) return -1;
         if (!hasPhotoA && hasPhotoB) return 1;
         return 0;
@@ -117,12 +144,12 @@ function renderCars(cars) {
     carsContainer.innerHTML = sortedCars.map(car => {
         const price = typeof car.price === 'number' ? car.price.toLocaleString('ru-RU') + ' ₽' : car.price;
         const year = String(car.year).split('.')[0];
-        const media = getCarMedia(car.vin);
-        const firstPhoto = media.photos[0] || placeholder;
+        const vinId = car.vin?.replace(/[^a-zA-Z0-9]/g, '').slice(-6);
+        const firstPhoto = mediaIndex[vinId]?.photos?.[0] || placeholder;
         
         return `
         <div class="car-card" data-car='${JSON.stringify(car).replace(/'/g, "&apos;")}'>
-            <img src="${firstPhoto}" alt="${car.brand} ${car.model}" class="car-image" data-vin="${car.vin || ''}">
+            <img src="${firstPhoto}" alt="${car.brand} ${car.model}" class="car-image" data-vin="${car.vin || ''}" onerror="this.src='${placeholder}'">
             <div class="car-info">
                 <div class="car-brand">${car.brand}</div>
                 <div class="car-model">${car.model}</div>
@@ -167,13 +194,13 @@ function filterCars() {
 }
 
 // Модальное окно
-function openModal(car) {
+async function openModal(car) {
     const price = typeof car.price === 'number' ? car.price.toLocaleString('ru-RU') + ' ₽' : car.price;
     const year = String(car.year).split('.')[0];
-    const media = getCarMedia(car.vin);
-    
+    const media = await getCarMedia(car.vin);
+
     // Создаём слайдер для фото
-    const photosHtml = media.photos.length > 0 
+    const photosHtml = media.photos.length > 0
         ? `<div class="photo-slider">
             <button class="slider-btn prev" onclick="slidePhoto(-1)">&#10094;</button>
             <div class="slider-container">
@@ -181,11 +208,11 @@ function openModal(car) {
             </div>
             <button class="slider-btn next" onclick="slidePhoto(1)">&#10095;</button>
             ${media.photos.length > 1 ? `<div class="slider-dots">${media.photos.map((_, i) => `<span class="dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></span>`).join('')}</div>` : ''}
-        </div>` 
+        </div>`
         : '';
-    
-    const videosHtml = media.videos.length > 0 
-        ? `<div class="gallery-section"><h3>🎬 Видео (${media.videos.length})</h3><div class="videos-gallery">${media.videos.map(s => `<video controls><source src="${s}"></video>`).join('')}</div></div>` 
+
+    const videosHtml = media.videos.length > 0
+        ? `<div class="gallery-section"><h3>🎬 Видео (${media.videos.length})</h3><div class="videos-gallery">${media.videos.map(s => `<video controls><source src="${s}"></video>`).join('')}</div></div>`
         : '';
 
     modalContent.innerHTML = `
